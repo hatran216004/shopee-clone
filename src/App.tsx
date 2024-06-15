@@ -1,5 +1,9 @@
+import useRouteElement from './useRouteElement';
+
 function App() {
-    return <h1>Shopee Clone</h1>
+    const routeElements = useRouteElement();
+
+    return routeElements;
 }
 
-export default App
+export default App;
