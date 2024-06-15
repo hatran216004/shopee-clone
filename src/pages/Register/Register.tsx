@@ -24,7 +24,7 @@ const Register = () => {
 
     return (
         <div className='bg-orange'>
-            <div className='max-w-7xl mx-auto px-4'>
+            <div className='container'>
                 <div className='grid lg:grid-cols-5 py-4 md:py-24 items-center'>
                     <div className='col-span-2 lg:block hidden'>
                         <svg viewBox='0 0 192 65' className='h-40 fill-white'>
