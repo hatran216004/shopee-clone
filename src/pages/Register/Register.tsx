@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { getRules } from 'src/utils/rules'
+import Input from 'src/components/Input'
 
 interface FormData {
     email: string
@@ -42,41 +43,32 @@ const Register = () => {
                     <div className='lg:col-span-2 lg:col-start-4 p-10 rounded bg-white shadow-md'>
                         <form onSubmit={onSubmit} noValidate>
                             <div className='text-xl mb-4'>Đăng Ký</div>
-                            <div className='mt-2'>
-                                <input
-                                    {...register('email', rules.email)}
-                                    placeholder='Email'
-                                    type='text'
-                                    className='p-2 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                                />
-                                <div className='mt-2 text-red-600 text-sm min-h-[1.3rem]'>
-                                    {errors && errors.email?.message}
-                                </div>
-                            </div>
-                            <div className='mt-2'>
-                                <input
-                                    autoComplete='on'
-                                    placeholder='Password'
-                                    type='password'
-                                    {...register('password', rules.password)}
-                                    className='p-2 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                                />
-                                <div className='mt-2 text-red-600 text-sm min-h-[1.3rem]'>
-                                    {errors && errors.password?.message}
-                                </div>
-                            </div>
-                            <div className='mt-2'>
-                                <input
-                                    autoComplete='on'
-                                    placeholder='Comfirm Password'
-                                    type='password'
-                                    {...register('confirm_password', rules.confirm_password)}
-                                    className='p-2 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                                />
-                                <div className='mt-2 text-red-600 text-sm min-h-[1.3rem]'>
-                                    {errors.confirm_password?.message}
-                                </div>
-                            </div>
+                            <Input
+                                type='text'
+                                placeholder='Email'
+                                errorMessage={errors && errors.email?.message}
+                                name='email'
+                                rules={rules.email}
+                                register={register}
+                            />
+                            <Input
+                                type='password'
+                                placeholder='Password'
+                                errorMessage={errors && errors.password?.message}
+                                name='password'
+                                rules={rules.password}
+                                autoComplete='on'
+                                register={register}
+                            />
+                            <Input
+                                type='password'
+                                placeholder='Confirm Password'
+                                errorMessage={errors && errors.confirm_password?.message}
+                                name='confirm_password'
+                                rules={rules.confirm_password}
+                                autoComplete='on'
+                                register={register}
+                            />
                             <button className='mt-4 w-full text-center py-3 px-2 uppercase bg-orange text-white hover:opacity-80'>
                                 Đăng Ký
                             </button>
