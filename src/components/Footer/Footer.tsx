@@ -4,10 +4,12 @@ const Footer = () => {
             <div className="max-w-7xl mx-auto px-4">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                     <div className="lg:col-span-1">
-                        <span className="text-sm">© 2024 Shopee. Tất cả các quyền được bảo lưu.</span>
+                        <div className="text-sm text-textFooter text-center">
+                            © 2024 Shopee. Tất cả các quyền được bảo lưu.
+                        </div>
                     </div>
                     <div className="lg:col-span-2">
-                        <div className="text-sm">
+                        <div className="text-sm text-textFooter text-center">
                             Quốc gia & Khu vực:
                             <span className="px-1 border-r-2 border-slate-300">Singapore</span>
                             <span className="px-1 border-r-2 border-slate-300">Indonesia</span>
