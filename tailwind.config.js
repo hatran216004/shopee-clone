@@ -5,9 +5,9 @@ module.exports = {
         extend: {
             colors: {
                 orange: '#ee4d2d',
-                textFooter: 'rgba(0, 0, 0, .65)',
-            },
-        },
+                textFooter: 'rgba(0, 0, 0, .65)'
+            }
+        }
     },
-    plugins: [],
-};
+    plugins: []
+}

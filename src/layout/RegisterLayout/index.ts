@@ -1,1 +1,1 @@
-export { default } from './RegisterLayout';
+export { default } from './RegisterLayout'
