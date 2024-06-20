@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { loginSchema, LoginSchema } from 'src/utils/rules'
+import { loginSchema, type LoginSchema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Input from 'src/components/Input'
 
@@ -37,7 +37,7 @@ const Login = () => {
                         </div>
                     </div>
                     <div className='lg:col-span-2 lg:col-start-4 p-10 rounded bg-white shadow-md'>
-                        <form onSubmit={onSubmit}>
+                        <form onSubmit={onSubmit} noValidate>
                             <div className='text-xl mb-4'>Đăng Nhập</div>
                             <Input
                                 type='email'
