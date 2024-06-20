@@ -7,12 +7,15 @@ import _ from 'lodash'
 import { schema, Schema } from 'src/utils/rules'
 import Input from 'src/components/Input'
 import { registerAccount } from 'src/api/auth.api'
+import { isAxiosUnprocessableEntityError } from '../../utils/utils'
+import { ResponeApi } from 'src/types/utils.type'
 
 type FormData = Schema
 
 const Register = () => {
     const {
         register,
+        setError,
         handleSubmit,
         formState: { errors }
     } = useForm<FormData>({
@@ -25,6 +28,21 @@ const Register = () => {
         registerAccountMutation.mutate(newData, {
             onSuccess: (data) => {
                 console.log(data)
+            },
+            onError: (error) => {
+                // dữ liệu trong response.data của error sẽ có kiểu là ResponeApi
+                // data trong ResponeApi có kiểu FormData bỏ đi confirm_password
+                if (isAxiosUnprocessableEntityError<ResponeApi<Omit<FormData, 'confirm_password'>>>(error)) {
+                    const formError = error.response?.data.data
+                    if (formError) {
+                        Object.keys(formError).forEach((key) => {
+                            setError(key as keyof Omit<FormData, 'confirm_password'>, {
+                                message: formError[key as keyof Omit<FormData, 'confirm_password'>],
+                                type: 'Server'
+                            })
+                        })
+                    }
+                }
             }
         })
     })
