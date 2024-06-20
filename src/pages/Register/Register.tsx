@@ -1,23 +1,19 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { getRules } from 'src/utils/rules'
+import { schema, Schema } from 'src/utils/rules'
 import Input from 'src/components/Input'
+import { yupResolver } from '@hookform/resolvers/yup'
 
-interface FormData {
-    email: string
-    password: string
-    confirm_password: string
-}
+type FormData = Schema
 
 const Register = () => {
     const {
-        getValues,
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm<FormData>()
-
-    const rules = getRules(getValues)
+    } = useForm<FormData>({
+        resolver: yupResolver(schema)
+    })
 
     const onSubmit = handleSubmit((data) => {
         console.log(data)
@@ -44,28 +40,25 @@ const Register = () => {
                         <form onSubmit={onSubmit} noValidate>
                             <div className='text-xl mb-4'>Đăng Ký</div>
                             <Input
-                                type='text'
+                                type='email'
                                 placeholder='Email'
-                                errorMessage={errors && errors.email?.message}
+                                errorMessage={errors.email?.message}
                                 name='email'
-                                rules={rules.email}
                                 register={register}
                             />
                             <Input
                                 type='password'
                                 placeholder='Password'
-                                errorMessage={errors && errors.password?.message}
+                                errorMessage={errors.password?.message}
                                 name='password'
-                                rules={rules.password}
                                 autoComplete='on'
                                 register={register}
                             />
                             <Input
                                 type='password'
                                 placeholder='Confirm Password'
-                                errorMessage={errors && errors.confirm_password?.message}
+                                errorMessage={errors.confirm_password?.message}
                                 name='confirm_password'
-                                rules={rules.confirm_password}
                                 autoComplete='on'
                                 register={register}
                             />

@@ -1,6 +1,24 @@
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { loginSchema, LoginSchema } from 'src/utils/rules'
+import { yupResolver } from '@hookform/resolvers/yup'
+import Input from 'src/components/Input'
+
+type FormData = LoginSchema
 
 const Login = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<FormData>({
+        resolver: yupResolver(loginSchema)
+    })
+
+    const onSubmit = handleSubmit((data) => {
+        console.log(data)
+    })
+
     return (
         <div className='bg-orange'>
             <div className='container'>
@@ -19,27 +37,24 @@ const Login = () => {
                         </div>
                     </div>
                     <div className='lg:col-span-2 lg:col-start-4 p-10 rounded bg-white shadow-md'>
-                        <form>
+                        <form onSubmit={onSubmit}>
                             <div className='text-xl mb-4'>Đăng Nhập</div>
-                            <div className='mt-2'>
-                                <input
-                                    placeholder='Email'
-                                    type='text'
-                                    name='email'
-                                    className='p-2 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                                />
-                                <div className='mt-2 text-red-600 text-sm min-h-[1rem]'></div>
-                            </div>
-                            <div className='mt-2'>
-                                <input
-                                    autoComplete='on'
-                                    placeholder='Password'
-                                    type='password'
-                                    name='password'
-                                    className='p-2 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                                />
-                                <div className='mt-2 text-red-600 text-sm min-h-[1rem]'></div>
-                            </div>
+                            <Input
+                                type='email'
+                                name='email'
+                                placeholder='Email...'
+                                autoComplete='on'
+                                errorMessage={errors.email?.message}
+                                register={register}
+                            />
+                            <Input
+                                type='password'
+                                name='password'
+                                placeholder='Password...'
+                                autoComplete='on'
+                                errorMessage={errors.password?.message}
+                                register={register}
+                            />
                             <button className='mt-4 w-full text-center py-3 px-2 uppercase bg-orange text-white hover:opacity-80'>
                                 Đăng nhập
                             </button>
