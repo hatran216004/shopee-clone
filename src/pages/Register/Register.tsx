@@ -8,7 +8,7 @@ import { schema, Schema } from 'src/utils/rules'
 import Input from 'src/components/Input'
 import { registerAccount } from 'src/api/auth.api'
 import { isAxiosUnprocessableEntityError } from '../../utils/utils'
-import { ResponeApi } from 'src/types/utils.type'
+import { ResponseApi } from 'src/types/utils.type'
 
 type FormData = Schema
 
@@ -24,15 +24,14 @@ const Register = () => {
 
     const onSubmit = handleSubmit((data) => {
         const newData = _.omit(data, ['confirm_password'])
-        console.log(newData)
         registerAccountMutation.mutate(newData, {
             onSuccess: (data) => {
                 console.log(data)
             },
             onError: (error) => {
-                // dữ liệu trong response.data của error sẽ có kiểu là ResponeApi
-                // data trong ResponeApi có kiểu FormData bỏ đi confirm_password
-                if (isAxiosUnprocessableEntityError<ResponeApi<Omit<FormData, 'confirm_password'>>>(error)) {
+                // dữ liệu trong response.data của error sẽ có kiểu là ResponseApi
+                // data trong ResponseApi có kiểu FormData bỏ đi confirm_password
+                if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
                     const formError = error.response?.data.data
                     if (formError) {
                         Object.keys(formError).forEach((key) => {
