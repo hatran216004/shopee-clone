@@ -6,7 +6,7 @@ import {
     shift,
     offset,
     type Placement,
-    flip,
+    flip, // đổi hướng khi scroll qua
     autoUpdate,
     useHover,
     useFocus,

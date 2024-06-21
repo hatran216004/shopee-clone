@@ -104,7 +104,7 @@ const Header = () => {
                             </g>
                         </svg>
                     </Link>
-                    <form className='flex items-center col-start-3 col-span-9 bg-white h-10 pt-1 pb-1 ps-3 pe-1 rounded-sm'>
+                    <form className='flex items-center col-start-3 col-span-8 bg-white h-10 pt-1 pb-1 ps-3 pe-1 rounded-sm'>
                         <input
                             name='search'
                             type='text'
@@ -128,23 +128,148 @@ const Header = () => {
                             </svg>
                         </button>
                     </form>
-                    <div className='col-span-1 ml-8'>
-                        <Link to='#!'>
-                            <svg
-                                xmlns='http://www.w3.org/2000/svg'
-                                fill='none'
-                                viewBox='0 0 24 24'
-                                strokeWidth={1.5}
-                                stroke='white'
-                                className='size-7 hover:opacity-90'
-                            >
-                                <path
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
-                                />
-                            </svg>
-                        </Link>
+                    <div className='col-span-1'>
+                        <Popover
+                            renderPopover={
+                                <div className='bg-white w-[400px] rounded-sm shadow-md'>
+                                    {/* <img
+                                        className='w-[100px] h-[100] object-cover mx-auto'
+                                        src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/c44984f18d2d2211.png'
+                                        alt=''
+                                    />
+                                    <p className='text-center text-base text-[#000000cc] font-normal'>
+                                        Chưa có sản phẩm
+                                    </p> */}
+
+                                    <div className='pt-3'>
+                                        <p className='px-3 capitalize text-[#00000042] text-base'>Sản phẩm mới thêm</p>
+                                        <div className='mt-4 max-h-72 overflow-y-auto'>
+                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
+                                                <div className='flex items-start gap-2'>
+                                                    <img
+                                                        className='w-10 h-10 object-cover flex-shrink-0'
+                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
+                                                        alt=''
+                                                    />
+                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
+                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
+                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
+                                                    </p>
+                                                </div>
+                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
+                                                    đ132.233
+                                                </span>
+                                            </div>
+                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
+                                                <div className='flex items-start gap-2'>
+                                                    <img
+                                                        className='w-10 h-10 object-cover flex-shrink-0'
+                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
+                                                        alt=''
+                                                    />
+                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
+                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
+                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
+                                                    </p>
+                                                </div>
+                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
+                                                    đ132.233
+                                                </span>
+                                            </div>
+                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
+                                                <div className='flex items-start gap-2'>
+                                                    <img
+                                                        className='w-10 h-10 object-cover flex-shrink-0'
+                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
+                                                        alt=''
+                                                    />
+                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
+                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
+                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
+                                                    </p>
+                                                </div>
+                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
+                                                    đ132.233
+                                                </span>
+                                            </div>
+                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
+                                                <div className='flex items-start gap-2'>
+                                                    <img
+                                                        className='w-10 h-10 object-cover flex-shrink-0'
+                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
+                                                        alt=''
+                                                    />
+                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
+                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
+                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
+                                                    </p>
+                                                </div>
+                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
+                                                    đ132.233
+                                                </span>
+                                            </div>
+                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
+                                                <div className='flex items-start gap-2'>
+                                                    <img
+                                                        className='w-10 h-10 object-cover flex-shrink-0'
+                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
+                                                        alt=''
+                                                    />
+                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
+                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
+                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
+                                                    </p>
+                                                </div>
+                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
+                                                    đ132.233
+                                                </span>
+                                            </div>
+                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
+                                                <div className='flex items-start gap-2'>
+                                                    <img
+                                                        className='w-10 h-10 object-cover flex-shrink-0'
+                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
+                                                        alt=''
+                                                    />
+                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
+                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
+                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
+                                                    </p>
+                                                </div>
+                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
+                                                    đ132.233
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className='p-3 flex items-center justify-between bg-white'>
+                                            <span className='text-[#000000cc] text-sm capitalize'>
+                                                1 Thêm vào giỏ hàng{' '}
+                                            </span>
+                                            <button className='py-2 px-3 capitalize text-white bg-orange text-sm hover:opacity-90'>
+                                                Xem giỏ hàng
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        >
+                            <Link to='#!' className='flex justify-center'>
+                                <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    fill='none'
+                                    viewBox='0 0 24 24'
+                                    strokeWidth={1.5}
+                                    stroke='white'
+                                    className='size-7 hover:opacity-90'
+                                >
+                                    <path
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
+                                        d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
+                                    />
+                                </svg>
+                            </Link>
+                        </Popover>
                     </div>
                 </div>
             </div>
