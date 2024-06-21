@@ -1,18 +1,29 @@
 import { Link } from 'react-router-dom'
+import Popover from '../Popover'
 
 const Header = () => {
     return (
-        <div className='pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)]'>
+        <div className='sticky top-0 left-0 pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)]'>
             <div className='container'>
                 <div className='flex justify-between'>
-                    <div className='flex items-center text-slate-100 text-sm cursor-pointer'>
+                    <div className='flex items-center text-slate-100 text-sm'>
                         <span className='pe-2 border-r-2 border-red-400'>Kênh người bán</span>
-                        <span className='ps-2 pe-2 border-r-2 border-red-400'>Trở thành Người bán Shopee</span>
-                        <span className='ps-2 pe-2 border-r-2 border-red-400'>Tải ứng dụng</span>
-                        <span className='ps-2 pe-2'>Kết nối</span>
+                        <span className='px-2 border-r-2 border-red-400'>Trở thành Người bán Shopee</span>
+                        <span className='px-2 border-r-2 border-red-400'>Tải ứng dụng</span>
+                        <span className='px-2'>Kết nối</span>
                     </div>
                     <div className='flex items-center cursor-pointer gap-4'>
-                        <div className='flex items-center text-sm text-slate-100 hover:opacity-90'>
+                        <Popover
+                            className='ps-4 flex items-center text-sm text-slate-100 hover:opacity-90'
+                            renderPopover={
+                                <div className='bg-white relative shadow-md rounded-sm border-gray-200'>
+                                    <div className='w-48 flex flex-col items-start text-sm'>
+                                        <button className='p-3 hover:text-orange w-full text-left'>Tiếng Việt</button>
+                                        <button className='p-3 hover:text-orange w-full text-left'>English</button>
+                                    </div>
+                                </div>
+                            }
+                        >
                             <svg
                                 xmlns='http://www.w3.org/2000/svg'
                                 fill='none'
@@ -38,17 +49,40 @@ const Header = () => {
                             >
                                 <path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
                             </svg>
-                        </div>
-                        <div className='flex items-center text-sm text-slate-100 gap-2'>
+                        </Popover>
+                        <Popover
+                            className='flex items-center text-sm text-slate-100 gap-2'
+                            renderPopover={
+                                <div className='bg-white relative shadow-md rounded-sm border-gray-200'>
+                                    <div className='flex flex-col items-start text-sm'>
+                                        <Link
+                                            to='#!'
+                                            className='py-3 px-4 hover:bg-[#fafafa]  hover:text-[#00bfa5] w-full text-left'
+                                        >
+                                            Tài khoản của tôi
+                                        </Link>
+                                        <Link
+                                            to='#!'
+                                            className='py-3 px-4 hover:bg-[#fafafa]  hover:text-[#00bfa5] w-full text-left'
+                                        >
+                                            Đơn mua
+                                        </Link>
+                                        <button className='py-3 px-4 hover:bg-[#fafafa]  hover:text-[#00bfa5] w-full text-left'>
+                                            Đăng xuất
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        >
                             <div className='w-6 h-6 rounded-full'>
                                 <img
                                     className='w-full h-full object-cover rounded-full'
-                                    src='https://i.pinimg.com/736x/8d/6c/e4/8d6ce409d6dc843674ae31ee94d3eca4.jpg'
+                                    src='https://i.pinimg.com/564x/cf/10/97/cf1097d36e5e44e836bbf3f777d2afc3.jpg'
                                     alt=''
                                 />
                             </div>
                             <span>Ha Tran</span>
-                        </div>
+                        </Popover>
                         {/* <div className='flex items-center text-sm text-slate-100'>
                             <Link to='/register' className='pe-2 border-r-2 border-red-400 hover:opacity-90'>
                                 Đăng ký
