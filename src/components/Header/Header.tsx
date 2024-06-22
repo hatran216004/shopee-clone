@@ -1,7 +1,20 @@
 import { Link } from 'react-router-dom'
 import Popover from '../Popover'
+import { useMutation } from '@tanstack/react-query'
+import { logoutAccount } from 'src/api/auth.api'
+import { useContext } from 'react'
+import { AppContext } from 'src/context/app.context'
 
 const Header = () => {
+    const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+
+    const logoutMutation = useMutation({
+        mutationFn: logoutAccount,
+        onSuccess: () => {
+            setIsAuthenticated(false)
+        }
+    })
+
     return (
         <div className='sticky top-0 left-0 pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)]'>
             <div className='container'>
@@ -50,47 +63,54 @@ const Header = () => {
                                 <path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
                             </svg>
                         </Popover>
-                        <Popover
-                            className='flex items-center text-sm text-slate-100 gap-2'
-                            renderPopover={
-                                <div className='bg-white relative shadow-md rounded-sm border-gray-200'>
-                                    <div className='flex flex-col items-start text-sm'>
-                                        <Link
-                                            to='#!'
-                                            className='py-3 px-4 hover:bg-[#fafafa]  hover:text-[#00bfa5] w-full text-left'
-                                        >
-                                            Tài khoản của tôi
-                                        </Link>
-                                        <Link
-                                            to='#!'
-                                            className='py-3 px-4 hover:bg-[#fafafa]  hover:text-[#00bfa5] w-full text-left'
-                                        >
-                                            Đơn mua
-                                        </Link>
-                                        <button className='py-3 px-4 hover:bg-[#fafafa]  hover:text-[#00bfa5] w-full text-left'>
-                                            Đăng xuất
-                                        </button>
+                        {isAuthenticated && (
+                            <Popover
+                                className='flex items-center text-sm text-slate-100 gap-2'
+                                renderPopover={
+                                    <div className='bg-white relative shadow-md rounded-sm border-gray-200'>
+                                        <div className='flex flex-col items-start text-sm'>
+                                            <Link
+                                                to='/profile'
+                                                className='py-3 px-4 hover:bg-[#fafafa]  hover:text-[#00bfa5] w-full text-left'
+                                            >
+                                                Tài khoản của tôi
+                                            </Link>
+                                            <Link
+                                                to='#!'
+                                                className='py-3 px-4 hover:bg-[#fafafa]  hover:text-[#00bfa5] w-full text-left'
+                                            >
+                                                Đơn mua
+                                            </Link>
+                                            <button
+                                                onClick={() => logoutMutation.mutate()}
+                                                className='py-3 px-4 hover:bg-[#fafafa]  hover:text-[#00bfa5] w-full text-left'
+                                            >
+                                                Đăng xuất
+                                            </button>
+                                        </div>
                                     </div>
+                                }
+                            >
+                                <div className='w-6 h-6 rounded-full'>
+                                    <img
+                                        className='w-full h-full object-cover rounded-full'
+                                        src='https://i.pinimg.com/564x/cf/10/97/cf1097d36e5e44e836bbf3f777d2afc3.jpg'
+                                        alt=''
+                                    />
                                 </div>
-                            }
-                        >
-                            <div className='w-6 h-6 rounded-full'>
-                                <img
-                                    className='w-full h-full object-cover rounded-full'
-                                    src='https://i.pinimg.com/564x/cf/10/97/cf1097d36e5e44e836bbf3f777d2afc3.jpg'
-                                    alt=''
-                                />
+                                <span>Ha Tran</span>
+                            </Popover>
+                        )}
+                        {!isAuthenticated && (
+                            <div className='flex items-center text-sm text-slate-100'>
+                                <Link to='/register' className='pe-2 border-r-2 border-red-400 hover:opacity-90'>
+                                    Đăng ký
+                                </Link>
+                                <Link to='/login' className='ps-2 hover:opacity-90'>
+                                    Đăng nhập
+                                </Link>
                             </div>
-                            <span>Ha Tran</span>
-                        </Popover>
-                        {/* <div className='flex items-center text-sm text-slate-100'>
-                            <Link to='/register' className='pe-2 border-r-2 border-red-400 hover:opacity-90'>
-                                Đăng ký
-                            </Link>
-                            <Link to='/login' className='ps-2 hover:opacity-90'>
-                                Đăng nhập
-                            </Link>
-                        </div> */}
+                        )}
                     </div>
                 </div>
                 <div className='grid grid-cols-12 gap-4 mt-4 items-end'>

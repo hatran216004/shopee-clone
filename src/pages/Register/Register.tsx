@@ -4,11 +4,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import _ from 'lodash'
 
-import { schema, Schema } from 'src/utils/rules'
 import Input from 'src/components/Input'
+import { schema, Schema } from 'src/utils/rules'
 import { registerAccount } from 'src/api/auth.api'
 import { isAxiosUnprocessableEntityError } from '../../utils/utils'
-import { ResponseApi } from 'src/types/utils.type'
+import { ErrorResponseApi } from 'src/types/utils.type'
+import { AppContext } from 'src/context/app.context'
+import { useContext } from 'react'
 
 type FormData = Schema
 
@@ -22,16 +24,18 @@ const Register = () => {
         resolver: yupResolver(schema)
     })
 
+    const { setIsAuthenticated } = useContext(AppContext)
+
     const onSubmit = handleSubmit((data) => {
         const newData = _.omit(data, ['confirm_password'])
         registerAccountMutation.mutate(newData, {
-            onSuccess: (data) => {
-                console.log(data)
+            onSuccess: () => {
+                setIsAuthenticated(true)
             },
             onError: (error) => {
-                // dữ liệu trong response.data của error sẽ có kiểu là ResponseApi
-                // data trong ResponseApi có kiểu FormData bỏ đi confirm_password
-                if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
+                // dữ liệu trong response.data của error sẽ có kiểu là ErrorResponseApi
+                // data trong ErrorResponseApi có kiểu FormData bỏ đi confirm_password
+                if (isAxiosUnprocessableEntityError<ErrorResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
                     const formError = error.response?.data.data
                     if (formError) {
                         Object.keys(formError).forEach((key) => {

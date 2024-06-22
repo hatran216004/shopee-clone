@@ -5,13 +5,16 @@ import Login from './pages/Login'
 import RegisterLayout from './layout/RegisterLayout'
 import MainLayout from './layout/MainLayout'
 import Profile from './pages/Profile'
+import { useContext } from 'react'
+import { AppContext } from './context/app.context'
 
-const isAuthenticated = true
 const ProtectedRoute = () => {
+    const { isAuthenticated } = useContext(AppContext)
     return isAuthenticated ? <Outlet /> : <Navigate to='login' />
 }
 
 const RejectectedRoute = () => {
+    const { isAuthenticated } = useContext(AppContext)
     return !isAuthenticated ? <Outlet /> : <Navigate to='/' />
 }
 
