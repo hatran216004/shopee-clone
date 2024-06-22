@@ -77,6 +77,7 @@ const Login = () => {
                         <form onSubmit={onSubmit} noValidate>
                             <div className='text-xl mb-4'>Đăng Nhập</div>
                             <Input
+                                className='mt-2'
                                 type='email'
                                 name='email'
                                 placeholder='Email...'
@@ -85,6 +86,7 @@ const Login = () => {
                                 register={register}
                             />
                             <Input
+                                className='mt-2'
                                 type='password'
                                 name='password'
                                 placeholder='Password...'

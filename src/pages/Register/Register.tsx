@@ -79,6 +79,7 @@ const Register = () => {
                         <form onSubmit={onSubmit} noValidate>
                             <div className='text-xl mb-4'>Đăng Ký</div>
                             <Input
+                                className='mt-2'
                                 type='email'
                                 placeholder='Email'
                                 errorMessage={errors.email?.message}
@@ -86,6 +87,7 @@ const Register = () => {
                                 register={register}
                             />
                             <Input
+                                className='mt-2'
                                 type='password'
                                 placeholder='Password'
                                 errorMessage={errors.password?.message}
@@ -94,6 +96,7 @@ const Register = () => {
                                 register={register}
                             />
                             <Input
+                                className='mt-2'
                                 type='password'
                                 placeholder='Confirm Password'
                                 errorMessage={errors.confirm_password?.message}
