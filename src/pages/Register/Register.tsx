@@ -12,6 +12,7 @@ import { ErrorResponseApi } from 'src/types/utils.type'
 import { AppContext } from 'src/context/app.context'
 import { useContext } from 'react'
 import Button from 'src/components/Button'
+import path from 'src/constants/path'
 
 type FormData = Schema
 
@@ -25,12 +26,14 @@ const Register = () => {
         resolver: yupResolver(schema)
     })
 
-    const { setIsAuthenticated } = useContext(AppContext)
+    const { setIsAuthenticated, setUser } = useContext(AppContext)
 
     const onSubmit = handleSubmit((data) => {
         const newData = _.omit(data, ['confirm_password'])
         registerAccountMutation.mutate(newData, {
-            onSuccess: () => {
+            onSuccess: (data) => {
+                const user = data.data.data.user
+                setUser(user)
                 setIsAuthenticated(true)
             },
             onError: (error) => {
@@ -114,7 +117,7 @@ const Register = () => {
                         </div>
                         <div className='flex items-center justify-center mt-8'>
                             <span className='text-gray-400 mr-2'>Bạn đã có tài khoản?</span>
-                            <Link to='/login' className='text-red-500'>
+                            <Link to={path.login} className='text-red-500'>
                                 Đăng nhập
                             </Link>
                         </div>

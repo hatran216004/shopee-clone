@@ -4,14 +4,16 @@ import { useMutation } from '@tanstack/react-query'
 import { logoutAccount } from 'src/api/auth.api'
 import { useContext } from 'react'
 import { AppContext } from 'src/context/app.context'
+import path from 'src/constants/path'
 
 const Header = () => {
-    const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+    const { isAuthenticated, setIsAuthenticated, setUser, user } = useContext(AppContext)
 
     const logoutMutation = useMutation({
         mutationFn: logoutAccount,
         onSuccess: () => {
             setIsAuthenticated(false)
+            setUser(null)
         }
     })
 
@@ -70,7 +72,7 @@ const Header = () => {
                                     <div className='bg-white relative shadow-md rounded-sm border-gray-200'>
                                         <div className='flex flex-col items-start text-sm'>
                                             <Link
-                                                to='/profile'
+                                                to={path.profile}
                                                 className='py-3 px-4 hover:bg-[#fafafa]  hover:text-[#00bfa5] w-full text-left'
                                             >
                                                 Tài khoản của tôi
@@ -98,15 +100,15 @@ const Header = () => {
                                         alt=''
                                     />
                                 </div>
-                                <span>Ha Tran</span>
+                                <span>{user?.email}</span>
                             </Popover>
                         )}
                         {!isAuthenticated && (
                             <div className='flex items-center text-sm text-slate-100'>
-                                <Link to='/register' className='pe-2 border-r-2 border-red-400 hover:opacity-90'>
+                                <Link to={path.register} className='pe-2 border-r-2 border-red-400 hover:opacity-90'>
                                     Đăng ký
                                 </Link>
-                                <Link to='/login' className='ps-2 hover:opacity-90'>
+                                <Link to={path.login} className='ps-2 hover:opacity-90'>
                                     Đăng nhập
                                 </Link>
                             </div>
@@ -164,54 +166,6 @@ const Header = () => {
                                     <div className='pt-3'>
                                         <p className='px-3 capitalize text-[#00000042] text-base'>Sản phẩm mới thêm</p>
                                         <div className='mt-4 max-h-72 overflow-y-auto'>
-                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
-                                                <div className='flex items-start gap-2'>
-                                                    <img
-                                                        className='w-10 h-10 object-cover flex-shrink-0'
-                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
-                                                        alt=''
-                                                    />
-                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
-                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
-                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
-                                                    </p>
-                                                </div>
-                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
-                                                    đ132.233
-                                                </span>
-                                            </div>
-                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
-                                                <div className='flex items-start gap-2'>
-                                                    <img
-                                                        className='w-10 h-10 object-cover flex-shrink-0'
-                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
-                                                        alt=''
-                                                    />
-                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
-                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
-                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
-                                                    </p>
-                                                </div>
-                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
-                                                    đ132.233
-                                                </span>
-                                            </div>
-                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
-                                                <div className='flex items-start gap-2'>
-                                                    <img
-                                                        className='w-10 h-10 object-cover flex-shrink-0'
-                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
-                                                        alt=''
-                                                    />
-                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
-                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
-                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
-                                                    </p>
-                                                </div>
-                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
-                                                    đ132.233
-                                                </span>
-                                            </div>
                                             <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
                                                 <div className='flex items-start gap-2'>
                                                     <img

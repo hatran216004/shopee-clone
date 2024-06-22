@@ -11,6 +11,7 @@ import { useContext } from 'react'
 import { AppContext } from 'src/context/app.context'
 import Input from 'src/components/Input'
 import Button from 'src/components/Button'
+import path from 'src/constants/path'
 
 type FormData = LoginSchema
 
@@ -24,7 +25,7 @@ const Login = () => {
         resolver: yupResolver(loginSchema)
     })
 
-    const { setIsAuthenticated } = useContext(AppContext)
+    const { setIsAuthenticated, setUser } = useContext(AppContext)
     const navigate = useNavigate()
 
     const loginAccountMutation = useMutation({
@@ -33,8 +34,10 @@ const Login = () => {
 
     const onSubmit = handleSubmit((data) => {
         loginAccountMutation.mutate(data, {
-            onSuccess: () => {
+            onSuccess: (data) => {
+                const user = data.data.data.user
                 setIsAuthenticated(true)
+                setUser(user)
                 navigate('/')
             },
             onError: (error) => {
@@ -99,7 +102,7 @@ const Login = () => {
                         </form>
                         <div className='flex items-center justify-center mt-8'>
                             <span className='text-gray-400 mr-2'>Bạn chưa có tài khoản?</span>
-                            <Link to='/register' className='text-red-500'>
+                            <Link to={path.register} className='text-red-500'>
                                 Đăng ký
                             </Link>
                         </div>
