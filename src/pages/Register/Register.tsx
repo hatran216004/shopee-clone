@@ -11,6 +11,7 @@ import { isAxiosUnprocessableEntityError } from '../../utils/utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
 import { AppContext } from 'src/context/app.context'
 import { useContext } from 'react'
+import Button from 'src/components/Button'
 
 type FormData = Schema
 
@@ -97,9 +98,13 @@ const Register = () => {
                                 autoComplete='on'
                                 register={register}
                             />
-                            <button className='mt-4 w-full text-center py-3 px-2 uppercase bg-orange text-white hover:opacity-80'>
-                                Đăng Ký
-                            </button>
+                            <Button
+                                isLoading={registerAccountMutation.isLoading}
+                                disabled={registerAccountMutation.isLoading}
+                                className='mt-4 w-full flex items-center justify-center text-center py-3 px-2 uppercase bg-orange text-white hover:opacity-80 select-none'
+                            >
+                                Đăng ký
+                            </Button>
                         </form>
                         <div className='mt-6 text-center text-xs'>
                             <div>Bằng việc đăng kí, bạn đã đồng ý với Shopee về</div>

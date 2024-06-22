@@ -4,12 +4,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 
 import { loginSchema, type LoginSchema } from 'src/utils/rules'
-import Input from 'src/components/Input'
 import { loginAccount } from 'src/api/auth.api'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
 import { useContext } from 'react'
 import { AppContext } from 'src/context/app.context'
+import Input from 'src/components/Input'
+import Button from 'src/components/Button'
 
 type FormData = LoginSchema
 
@@ -88,9 +89,13 @@ const Login = () => {
                                 errorMessage={errors.password?.message}
                                 register={register}
                             />
-                            <button className='mt-4 w-full text-center py-3 px-2 uppercase bg-orange text-white hover:opacity-80'>
+                            <Button
+                                isLoading={loginAccountMutation.isLoading}
+                                disabled={loginAccountMutation.isLoading}
+                                className='mt-4 w-full flex items-center justify-center text-center py-3 px-2 uppercase bg-orange text-white hover:opacity-80 select-none'
+                            >
                                 Đăng nhập
-                            </button>
+                            </Button>
                         </form>
                         <div className='flex items-center justify-center mt-8'>
                             <span className='text-gray-400 mr-2'>Bạn chưa có tài khoản?</span>
