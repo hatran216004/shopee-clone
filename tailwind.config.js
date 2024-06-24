@@ -16,7 +16,7 @@ module.exports = {
         }
     },
     plugins: [
-        plugin(function ({ addComponents }) {
+        plugin(function ({ addComponents, addUtilities }) {
             addComponents({
                 '.container': {
                     maxWidth: '80rem',
@@ -24,6 +24,11 @@ module.exports = {
                     marginRight: 'auto',
                     paddingLeft: '1rem',
                     paddingRight: '1rem'
+                }
+            })
+            addUtilities({
+                '.group-hover-display-block': {
+                    '@apply hidden group-hover:block': {}
                 }
             })
         })
