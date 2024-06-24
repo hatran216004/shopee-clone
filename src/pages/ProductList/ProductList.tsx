@@ -5,7 +5,6 @@ import SortProductList from './SortProductList'
 import productApi from 'src/api/product.api'
 import useQueryParams from 'src/hooks/useQueryParams'
 
-const LIMIT = 30
 const ProductList = () => {
     const queryParams = useQueryParams()
 
@@ -26,10 +25,13 @@ const ProductList = () => {
                     <div className='col-span-10'>
                         <SortProductList />
                         <div className='mt-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2'>
-                            {Array(LIMIT)
-                                .fill(0)
-                                .map((_, index) => {
-                                    return <Product key={index} />
+                            {data &&
+                                data.data.data.products.map((product) => {
+                                    return (
+                                        <div className='col-span-1' key={product._id}>
+                                            <Product product={product} />
+                                        </div>
+                                    )
                                 })}
                         </div>
                     </div>
