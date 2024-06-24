@@ -21,11 +21,11 @@ const SortProductList = () => {
                                 fillRule='nonzero'
                             ></path>
                         </svg>
-                        <div className='absolute w-full top-full left-0'>
-                            <div className='p-3 bg-white text-left hover:text-orange group-hover-display-block'>
+                        <div className='bg-white absolute w-full top-full left-0 z-[1] rounded-sm'>
+                            <div className='p-3 text-left hover:text-orange group-hover-display-block'>
                                 Giá: thấp đến cao
                             </div>
-                            <div className='p-3 bg-white text-left hover:text-orange group-hover-display-block'>
+                            <div className='p-3  text-left hover:text-orange group-hover-display-block'>
                                 Giá: cao đến thấp
                             </div>
                         </div>

@@ -46,9 +46,9 @@ const Popover = ({
         placement
     })
     const { refs, floatingStyles, context } = data
-    const hover = useHover(context, { handleClose: safePolygon() }) //  xử lý hover
-    const focus = useFocus(context) // xử lý focus
-    const dismiss = useDismiss(context) //  xử lý tương tác đóng popover khi người dùng nhấp ra ngoài hoặc nhấn phím Esc
+    const hover = useHover(context, { handleClose: safePolygon() })
+    const focus = useFocus(context)
+    const dismiss = useDismiss(context) //xử lý tương tác đóng popover khi người dùng nhấp ra ngoài hoặc nhấn phím Esc
     // giúp trình đọc màn hình (screen readers) hiểu được chức năng của phần tử(tăng khả năng truy cập)
     const role = useRole(context, { role: 'tooltip' })
     // Kết hợp nhiều hooks để xử lý
@@ -64,6 +64,7 @@ const Popover = ({
                         <motion.div
                             ref={refs.setFloating}
                             style={{
+                                zIndex: '1',
                                 transformOrigin: `${data.middlewareData.arrow?.x}px top`,
                                 ...floatingStyles
                             }}
