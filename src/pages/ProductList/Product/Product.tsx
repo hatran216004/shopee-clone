@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import ProductRating from 'src/components/ProductRating'
 import { Product as ProductType } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle } from 'src/utils/utils'
 interface Props {
@@ -33,44 +34,7 @@ const Product = ({ product }: Props) => {
                 </div>
                 <div className='mt-3 flex items-center'>
                     <div className='flex gap-1 items-center'>
-                        {Array(5)
-                            .fill(0)
-                            .map((_, index) => {
-                                return (
-                                    <div key={index} className='relative'>
-                                        <svg
-                                            enableBackground='new 0 0 15 15'
-                                            viewBox='0 0 15 15'
-                                            x='0'
-                                            y='0'
-                                            className='size-2.5 fill-gray-300'
-                                        >
-                                            <polygon
-                                                points='7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4'
-                                                strokeLinecap='round'
-                                                strokeLinejoin='round'
-                                                strokeMiterlimit='10'
-                                            ></polygon>
-                                        </svg>
-                                        <div className='absolute top-0 left-0 overflow-hidden w-[50%]'>
-                                            <svg
-                                                enableBackground='new 0 0 15 15'
-                                                viewBox='0 0 15 15'
-                                                x='0'
-                                                y='0'
-                                                className='size-2.5 fill-yellow-400'
-                                            >
-                                                <polygon
-                                                    points='7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4'
-                                                    strokeLinecap='round'
-                                                    strokeLinejoin='round'
-                                                    strokeMiterlimit='10'
-                                                ></polygon>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                )
-                            })}
+                        <ProductRating rating={product.rating} />
                     </div>
                     <span className='ml-2 text-[#000000de] text-sm'>
                         Đã bán {formatNumberToSocialStyle(product.sold)}
