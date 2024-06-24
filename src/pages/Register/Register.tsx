@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 import Input from 'src/components/Input'
 import { schema, Schema } from 'src/utils/rules'
-import { registerAccount } from 'src/api/auth.api'
+import authApi from 'src/api/auth.api'
 import { isAxiosUnprocessableEntityError } from '../../utils/utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
 import { AppContext } from 'src/context/app.context'
@@ -55,7 +55,7 @@ const Register = () => {
     })
 
     const registerAccountMutation = useMutation({
-        mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+        mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
     })
 
     return (
