@@ -1,12 +1,16 @@
-import { useQuery } from '@tanstack/react-query'
 import AsideFilter from './AsideFilter'
 import Product from './Product'
 import SortProductList from './SortProductList'
 import productApi from 'src/api/product.api'
 import useQueryParams from 'src/hooks/useQueryParams'
+import Pagitation from 'src/components/Pagitation'
+
+import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 
 const ProductList = () => {
     const queryParams = useQueryParams()
+    const [currentPage, setCurrentPage] = useState<number>(1)
 
     const { data } = useQuery({
         queryKey: ['products', queryParams], // gọi lại queryFn khi queryParams thay đổi
@@ -16,7 +20,7 @@ const ProductList = () => {
     })
     console.log(data)
     return (
-        <div className='bg-[#f5f5f5] py-6 border-b-[3px] border-orange'>
+        <div className='bg-[#f5f5f5] py-6 border-b-[4px] border-orange'>
             <div className='container'>
                 <div className='grid grid-cols-12'>
                     <div className='col-span-2 mr-7'>
@@ -34,6 +38,7 @@ const ProductList = () => {
                                     )
                                 })}
                         </div>
+                        <Pagitation currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={20} />
                     </div>
                 </div>
             </div>

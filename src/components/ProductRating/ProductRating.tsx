@@ -14,10 +14,7 @@ const ProductRating = ({ rating }: { rating: number }) => {
         }
         if (order > rating && order - rating < 1) {
             return (rating - Math.floor(rating)) * 100 + '%'
-        }
-        if (order > rating && order - rating > 1) {
-            return '0%'
-        }
+        } else return '0%'
     }
 
     return (
