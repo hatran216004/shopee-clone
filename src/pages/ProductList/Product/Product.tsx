@@ -13,7 +13,7 @@ const Product = ({ product }: Props) => {
             className='block h-full bg-white rounded-b shadow-sm relative hover:-translate-y-1 hover:shadow-md
                 transition-all duration-[0.2s]'
         >
-            <figure className='relative pt-[100%]'>
+            <figure className='relative pt-[100%] select-none'>
                 <img
                     src={product.image}
                     alt={product.name}
@@ -29,7 +29,7 @@ const Product = ({ product }: Props) => {
                     </div>
                     <div className='flex items-center line-through text-gray-400 line-clamp-1'>
                         <span className='underline text-xs'>đ</span>
-                        {formatCurrency(product.price_before_discount)}
+                        <span>{formatCurrency(product.price_before_discount)}</span>
                     </div>
                 </div>
                 <div className='mt-3 flex items-center'>

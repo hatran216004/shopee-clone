@@ -28,6 +28,7 @@ const ProductList = () => {
         },
         isUndefined
     )
+    console.log(queryConfig)
     const { data } = useQuery({
         queryKey: ['products', queryConfig], // gọi lại queryFn khi queryParams thay đổi
         queryFn: () => {
@@ -46,7 +47,10 @@ const ProductList = () => {
                     <div className='col-span-10'>
                         {data && (
                             <>
-                                <SortProductList />
+                                <SortProductList
+                                    queryConfig={queryConfig}
+                                    pageSize={data?.data.data.pagination.page_size}
+                                />
                                 <div className='mt-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2'>
                                     {data.data.data.products.map((product) => {
                                         return (
