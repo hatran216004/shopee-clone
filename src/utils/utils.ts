@@ -28,3 +28,6 @@ export const formatNumberToSocialStyle = (value: number) => {
         .replace('.', ',')
         .toLocaleLowerCase()
 }
+
+// giá gốc - giá sau sale / giá gốc * 100% => % giảm
+export const rateSale = (original: number, sale: number) => Math.round(((original - sale) / original) * 100) + '%'

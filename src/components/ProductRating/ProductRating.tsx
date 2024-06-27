@@ -7,7 +7,17 @@
     5 > 3.4 => 0% (5 - 3.4 > 1)
  */
 
-const ProductRating = ({ rating }: { rating: number }) => {
+interface Props {
+    rating: number
+    activeClassname?: string
+    noneActiveClassname?: string
+}
+
+const ProductRating = ({
+    rating,
+    activeClassname = 'size-2.5 fill-yellow-400',
+    noneActiveClassname = 'size-2.5 fill-gray-300'
+}: Props) => {
     const handleWidth = (order: number) => {
         if (order <= rating) {
             return '100%'
@@ -29,7 +39,7 @@ const ProductRating = ({ rating }: { rating: number }) => {
                                 viewBox='0 0 15 15'
                                 x='0'
                                 y='0'
-                                className='size-2.5 fill-gray-300'
+                                className={noneActiveClassname}
                             >
                                 <polygon
                                     points='7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4'
@@ -47,7 +57,7 @@ const ProductRating = ({ rating }: { rating: number }) => {
                                     viewBox='0 0 15 15'
                                     x='0'
                                     y='0'
-                                    className='size-2.5 fill-yellow-400'
+                                    className={activeClassname}
                                 >
                                     <polygon
                                         points='7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4'
