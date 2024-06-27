@@ -5,6 +5,7 @@ import authApi from 'src/api/auth.api'
 import { useContext } from 'react'
 import { AppContext } from 'src/context/app.context'
 import path from 'src/constants/path'
+import classNames from 'classnames'
 
 const Header = () => {
     const { isAuthenticated, setIsAuthenticated, setUser, user } = useContext(AppContext)
@@ -18,7 +19,11 @@ const Header = () => {
     })
 
     return (
-        <div className='sticky top-0 left-0  z-[1] pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)]'>
+        <div
+            className={classNames('z-[1] pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)]', {
+                'sticky top-0 left-0': false
+            })}
+        >
             <div className='container'>
                 <div className='flex justify-between'>
                     <div className='flex items-center text-slate-100 text-sm'>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 
-import { loginSchema, type LoginSchema } from 'src/utils/rules'
+import { Schema, schema } from 'src/utils/rules'
 import authApi from 'src/api/auth.api'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
@@ -13,7 +13,8 @@ import Input from 'src/components/Input'
 import Button from 'src/components/Button'
 import path from 'src/constants/path'
 
-type FormData = LoginSchema
+type FormData = Pick<Schema, 'email' | 'password'>
+const loginSchema = schema.pick(['email', 'password'])
 
 const Login = () => {
     const {

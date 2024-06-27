@@ -14,7 +14,8 @@ import { useContext } from 'react'
 import Button from 'src/components/Button'
 import path from 'src/constants/path'
 
-type FormData = Schema
+type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
+const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 
 const Register = () => {
     const {
@@ -23,7 +24,7 @@ const Register = () => {
         handleSubmit,
         formState: { errors }
     } = useForm<FormData>({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(registerSchema)
     })
 
     const { setIsAuthenticated, setUser } = useContext(AppContext)
