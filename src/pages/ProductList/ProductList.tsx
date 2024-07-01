@@ -12,9 +12,10 @@ import useQueryConfig from 'src/hooks/useQueryConfig'
 const ProductList = () => {
     const queryConfig = useQueryConfig()
     const { data } = useQuery({
-        queryKey: ['products', queryConfig], // gọi lại queryFn khi queryParams thay đổi
+        queryKey: ['products', queryConfig], // gọi lại queryFn khi queryParams(queryConfig) thay đổi
         queryFn: () => productApi.getProducts(queryConfig as ProductListConfig),
-        keepPreviousData: true
+        keepPreviousData: true,
+        staleTime: 3 * 60 * 1000
     })
 
     const categoryQuery = useQuery({

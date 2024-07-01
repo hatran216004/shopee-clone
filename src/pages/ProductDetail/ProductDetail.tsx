@@ -2,26 +2,20 @@ import productApi from 'src/api/product.api'
 import ProductRating from 'src/components/ProductRating'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import InputNumber from 'src/components/InputNumber'
+import Product from '../ProductList/components/Product'
+import { ProductListConfig, Product as TypeProduct } from 'src/types/product.type'
 
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
-import Product from '../ProductList/components/Product'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Product as TypeProduct } from 'src/types/product.type'
 
 const ProductDetail = () => {
     const { nameId } = useParams()
-    console.log(nameId)
     const id = getIdFromNameId(nameId as string)
     const { data: productDetailData } = useQuery({
         queryKey: ['productDetail', id],
         queryFn: () => productApi.getProductDetail(id as string)
-    })
-    // similar
-    const { data: productsSimilar } = useQuery({
-        queryKey: ['productsSimilar'],
-        queryFn: () => productApi.getProducts({ category: product?.category._id })
     })
 
     const product = productDetailData?.data.data
@@ -29,6 +23,19 @@ const ProductDetail = () => {
     const [currIndexImg, setCurrIndexImg] = useState([0, 5])
     const imgRef = useRef<HTMLImageElement>(null)
     const currImgs = useMemo(() => (product ? product.images.slice(...currIndexImg) : []), [currIndexImg, product])
+
+    // similar
+    const queryConfig: ProductListConfig = {
+        limit: '20',
+        page: '1',
+        category: product?.category._id
+    }
+    const { data: productsSimilar } = useQuery({
+        queryKey: ['products', queryConfig],
+        queryFn: () => productApi.getProducts(queryConfig),
+        staleTime: 3 * 60 * 1000, // Infinity: vĩnh viễn
+        enabled: Boolean(product) // khi product có data thì query mới đc gọi
+    })
 
     useEffect(() => {
         if (product && product.images.length > 0) {
@@ -79,7 +86,7 @@ const ProductDetail = () => {
                     <>
                         <section className='bg-white p-4 rounded-sm shadow-sm'>
                             <div className='grid grid-cols-12 gap-7 items-start'>
-                                <div className='col-span-12 lg:col-span-5'>
+                                <div className='col-span-12 md:col-span-5'>
                                     <figure
                                         className='pt-[100%] relative w-full overflow-hidden border-[1px] border-gray-300 hover:cursor-zoom-in'
                                         onMouseMove={handleZoom}
@@ -153,9 +160,9 @@ const ProductDetail = () => {
                                         </button>
                                     </div>
                                 </div>
-                                <div className='col-span-12 lg:col-span-7'>
+                                <div className='col-span-12 md:col-span-7'>
                                     <div>
-                                        <h1 className='text-xl font-medium uppercase'>{product.name}</h1>
+                                        <h1 className='text-lg lg:text-xl font-medium uppercase'>{product.name}</h1>
                                         <div className='mt-7 flex items-center'>
                                             <div className='flex items-center gap-3'>
                                                 <span className='text-orange text-lg border-b-2 border-orange'>
@@ -180,7 +187,7 @@ const ProductDetail = () => {
                                         <div className='mt-7 flex items-center p-4 bg-[#f5f5f5]'>
                                             <span className='flex items-center text-gray-500 text-xl line-through'>
                                                 <span className='text-xs mr-1 underline'>đ</span>
-                                                {product.price_before_discount}
+                                                {formatCurrency(product.price_before_discount)}
                                             </span>
                                             <span className='ml-4 flex items-center text-orange text-3xl'>
                                                 <span className='text-lg underline'>đ</span>
@@ -277,18 +284,14 @@ const ProductDetail = () => {
                         </section>
                         <section className='mt-4 '>
                             <div className='text-lg text-gray-400 uppercase'>sản phẩm tương tự</div>
-                            <div className='mt-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2'>
-                                {productsSimilar &&
-                                    productsSimilar.data.data.products.map((productItem) => {
-                                        if (productItem.category._id === product.category._id) {
-                                            return (
-                                                <div className='col-span-1' key={productItem._id}>
-                                                    <Product product={productItem} />
-                                                </div>
-                                            )
-                                        }
-                                        return null
-                                    })}
+                            <div className='mt-3 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2'>
+                                {productsSimilar?.data.data.products.map((productItem) => {
+                                    return (
+                                        <div className='col-span-1' key={productItem._id}>
+                                            <Product product={productItem} />
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </section>
                     </>
