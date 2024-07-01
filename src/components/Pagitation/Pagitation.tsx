@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { Link, createSearchParams } from 'react-router-dom'
 import path from 'src/constants/path'
-import { QueryConfig } from 'src/pages/ProductList/ProductList'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 /*
     - Với range = 2 áp dụng cho khoảng cách đầu, cuối và xung quanh current_page

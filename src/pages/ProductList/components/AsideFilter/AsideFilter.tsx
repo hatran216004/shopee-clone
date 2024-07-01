@@ -1,7 +1,7 @@
 import Button from 'src/components/Button'
 import InputNumber from 'src/components/InputNumber'
 import { Category } from 'src/types/category.type'
-import { QueryConfig } from '../../ProductList'
+import { type QueryConfig } from 'src/hooks/useQueryConfig'
 import path from 'src/constants/path'
 import { Schema, schema } from 'src/utils/rules'
 import { type NoUndefinedField } from 'src/types/utils.type'
