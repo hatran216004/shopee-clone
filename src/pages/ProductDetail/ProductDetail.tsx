@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
 import Product from '../ProductList/components/Product'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Product as TypeProduct } from 'src/types/product.type'
 
 const ProductDetail = () => {
@@ -25,6 +25,7 @@ const ProductDetail = () => {
     const product = productDetailData?.data.data
     const [activeImg, setActiveImg] = useState('') // large img
     const [currIndexImg, setCurrIndexImg] = useState([0, 5])
+    const imgRef = useRef<HTMLImageElement>(null)
     const currImgs = useMemo(() => (product ? product.images.slice(...currIndexImg) : []), [currIndexImg, product])
 
     useEffect(() => {
@@ -48,6 +49,27 @@ const ProductDetail = () => {
         }
     }
 
+    const handleZoom = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        const rect = e.currentTarget.getBoundingClientRect()
+        const { width, height } = rect // width height thẻ figure
+        const { offsetX, offsetY } = e.nativeEvent // tọa độ x y thẻ figure
+        const img = imgRef.current as HTMLImageElement
+        const { naturalHeight, naturalWidth } = img // width height gốc của img
+
+        const top = offsetY * (1 - naturalHeight / width)
+        const left = offsetX * (1 - naturalWidth / height)
+
+        img.style.width = naturalWidth + 'px'
+        img.style.height = naturalHeight + 'px'
+        img.style.maxWidth = 'none'
+        img.style.top = top + 'px'
+        img.style.left = left + 'px'
+    }
+
+    const handleResetZoom = () => {
+        imgRef.current?.removeAttribute('style')
+    }
+
     return (
         <div className='bg-[#f5f5f5] py-8'>
             <div className='container'>
@@ -55,12 +77,17 @@ const ProductDetail = () => {
                     <>
                         <section className='bg-white p-4 rounded-sm shadow-sm'>
                             <div className='grid grid-cols-12 gap-7 items-start'>
-                                <div className=' col-span-12 lg:col-span-5'>
-                                    <figure className='pt-[100%] relative w-full'>
+                                <div className='col-span-12 lg:col-span-5'>
+                                    <figure
+                                        className='pt-[100%] relative w-full overflow-hidden border-[1px] border-gray-300 hover:cursor-zoom-in'
+                                        onMouseMove={handleZoom}
+                                        onMouseLeave={handleResetZoom}
+                                    >
                                         <img
                                             src={activeImg}
                                             alt={product.name}
-                                            className='absolute top-0 left-0 w-full h-full object-contain'
+                                            className='absolute top-0 left-0 w-full h-full object-contain pointer-events-none'
+                                            ref={imgRef}
                                         />
                                     </figure>
                                     <div className='mt-4 relative grid grid-cols-5 items-center gap-3'>
