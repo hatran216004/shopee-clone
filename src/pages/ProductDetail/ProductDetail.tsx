@@ -1,6 +1,6 @@
 import productApi from 'src/api/product.api'
 import ProductRating from 'src/components/ProductRating'
-import { formatCurrency, formatNumberToSocialStyle, rateSale } from 'src/utils/utils'
+import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import InputNumber from 'src/components/InputNumber'
 
 import { useQuery } from '@tanstack/react-query'
@@ -11,7 +11,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Product as TypeProduct } from 'src/types/product.type'
 
 const ProductDetail = () => {
-    const { id } = useParams()
+    const { nameId } = useParams()
+    console.log(nameId)
+    const id = getIdFromNameId(nameId as string)
     const { data: productDetailData } = useQuery({
         queryKey: ['productDetail', id],
         queryFn: () => productApi.getProductDetail(id as string)
@@ -50,9 +52,9 @@ const ProductDetail = () => {
     }
 
     const handleZoom = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        const rect = e.currentTarget.getBoundingClientRect()
+        const rect = e.currentTarget.getBoundingClientRect() // phần tử đang được hover(thẻ figure)
         const { width, height } = rect // width height thẻ figure
-        const { offsetX, offsetY } = e.nativeEvent // tọa độ x y thẻ figure
+        const { offsetX, offsetY } = e.nativeEvent // tọa độ x, y của con trỏ chuột bên trong thẻ figure.
         const img = imgRef.current as HTMLImageElement
         const { naturalHeight, naturalWidth } = img // width height gốc của img
 

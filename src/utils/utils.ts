@@ -31,3 +31,29 @@ export const formatNumberToSocialStyle = (value: number) => {
 
 // giá gốc - giá sau sale / giá gốc * 100% => % giảm
 export const rateSale = (original: number, sale: number) => Math.round(((original - sale) / original) * 100) + '%'
+
+// func xóa các ký tự đặc biệt trên bàn phím
+const removeSpecialCharacter = (str: string) =>
+    // eslint-disable-next-line no-useless-escape
+    str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, '')
+
+/*
+    const name = "Hello, World!";
+    const id = "12345";
+    const nameId = generateNameId({ name, id });
+    console.log(nameId); // Output: Hello-World-i.12345
+*/
+export const generateNameId = ({ name, id }: { name: string; id: string }) => {
+    return removeSpecialCharacter(name).replace(/\s/g, '-') + `-i.${id}`
+}
+
+/*
+    const nameId = "Hello-World-i.12345";
+    const id = getIdFromNameId(nameId);
+    arr: ['Hello-World', '12345']
+    console.log(id); // Output: 12345
+*/
+export const getIdFromNameId = (nameId: string) => {
+    const arr = nameId.split('-i.')
+    return arr[arr.length - 1]
+}
