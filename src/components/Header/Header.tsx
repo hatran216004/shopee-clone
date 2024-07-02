@@ -4,20 +4,24 @@ import { AppContext } from 'src/context/app.context'
 import path from 'src/constants/path'
 import useQueryConfig from 'src/hooks/useQueryConfig'
 import { Schema, schema } from 'src/utils/rules'
+import purchaseApi from 'src/api/purchases.api'
+import { formatCurrency } from 'src/utils/utils'
+import { purchasesStatus } from 'src/constants/purchases'
 
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useContext } from 'react'
 import classNames from 'classnames'
 import { omit } from 'lodash'
 
 type FormData = Pick<Schema, 'searchValue'>
 const searchSchema = schema.pick(['searchValue'])
-
+const MAX_PRODUCT_IN_CART = 5
 const Header = () => {
     const { isAuthenticated, setIsAuthenticated, setUser, user } = useContext(AppContext)
+    const queryClient = useQueryClient()
     const queryConfig = useQueryConfig()
     const navigate = useNavigate()
     const { register, handleSubmit } = useForm<FormData>({
@@ -55,6 +59,19 @@ const Header = () => {
         })
     })
 
+    // Khi chuyển trang thì Header chỉ bị re-render
+    // Chứ không bị unmount - mounting again
+    // (Tất nhiên là trừ trường hợp logout rồi nhảy sang RegisterLayout rồi nhảy vào lại)
+    // Nên các query này sẽ không bị inactive => Không bị gọi lại => không cần thiết phải set stale: Infinity
+    const { data: PurChasesData } = useQuery({
+        queryKey: ['purchases', { status: purchasesStatus.inCart }],
+        queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart }),
+        onSuccess: () => {
+            // gọi lại queryFn có queryKey có key ['purchases'] khi add to cart thành công
+            queryClient.invalidateQueries({ queryKey: ['purchases'] })
+        }
+    })
+    const purchaseInCart = PurChasesData?.data.data
     return (
         <div
             className={classNames('z-[1] pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)]', {
@@ -195,84 +212,66 @@ const Header = () => {
                             </svg>
                         </button>
                     </form>
-                    <div className='col-span-1'>
+                    <div className='col-span-1 flex justify-center relative'>
                         <Popover
                             renderPopover={
                                 <div className='bg-white w-[400px] rounded-sm shadow-md'>
-                                    {/* <img
-                                        className='w-[100px] h-[100] object-cover mx-auto'
-                                        src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/c44984f18d2d2211.png'
-                                        alt=''
-                                    />
-                                    <p className='text-center text-base text-[#000000cc] font-normal'>
-                                        Chưa có sản phẩm
-                                    </p> */}
-
-                                    <div className='pt-3'>
-                                        <p className='px-3 capitalize text-[#00000042] text-base'>Sản phẩm mới thêm</p>
-                                        <div className='mt-4 max-h-72 overflow-y-auto'>
-                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
-                                                <div className='flex items-start gap-2'>
-                                                    <img
-                                                        className='w-10 h-10 object-cover flex-shrink-0'
-                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
-                                                        alt=''
-                                                    />
-                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
-                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
-                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
-                                                    </p>
-                                                </div>
-                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
-                                                    đ132.233
-                                                </span>
+                                    {purchaseInCart && purchaseInCart.length > 0 ? (
+                                        <div className='pt-3'>
+                                            <p className='px-3 capitalize text-[#00000042] text-base'>
+                                                Sản phẩm mới thêm
+                                            </p>
+                                            <div className='mt-4'>
+                                                {purchaseInCart.slice(0, MAX_PRODUCT_IN_CART).map((purchase) => {
+                                                    return (
+                                                        <div
+                                                            className='p-3 flex bg-white hover:bg-[#f8f8f8]'
+                                                            key={purchase._id}
+                                                        >
+                                                            <div className='flex items-start gap-2'>
+                                                                <img
+                                                                    className='w-10 h-10 object-cover flex-shrink-0'
+                                                                    src={purchase.product.image}
+                                                                    alt=''
+                                                                />
+                                                                <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
+                                                                    {purchase.product.name}
+                                                                </p>
+                                                            </div>
+                                                            <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
+                                                                đ{formatCurrency(purchase.product.price)}
+                                                            </span>
+                                                        </div>
+                                                    )
+                                                })}
                                             </div>
-                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
-                                                <div className='flex items-start gap-2'>
-                                                    <img
-                                                        className='w-10 h-10 object-cover flex-shrink-0'
-                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
-                                                        alt=''
-                                                    />
-                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
-                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
-                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
-                                                    </p>
-                                                </div>
-                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
-                                                    đ132.233
+                                            <div className='p-3 flex items-center justify-between bg-white'>
+                                                <span className='text-[#000000cc] text-sm capitalize'>
+                                                    {purchaseInCart?.length > 5 &&
+                                                        purchaseInCart?.length - MAX_PRODUCT_IN_CART}{' '}
+                                                    Thêm hàng vào giỏ{' '}
                                                 </span>
-                                            </div>
-                                            <div className='p-3 flex bg-white hover:bg-[#f8f8f8]'>
-                                                <div className='flex items-start gap-2'>
-                                                    <img
-                                                        className='w-10 h-10 object-cover flex-shrink-0'
-                                                        src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-ljwdmc5h17skad_tn'
-                                                        alt=''
-                                                    />
-                                                    <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
-                                                        Bàn Làm Việc, Bàn Gaming Nội Thất 5C chữ K,U,Z nhiều phiên bản,
-                                                        mặt gỗ 1m2,1m thiết kế cá tính, chân sắt sơn tĩnh điện
-                                                    </p>
-                                                </div>
-                                                <span className='ml-10 text-sm text-[#ee4d2d] font-normal'>
-                                                    đ132.233
-                                                </span>
+                                                <button className='py-2 px-3 capitalize text-white bg-orange text-sm hover:opacity-90'>
+                                                    Xem giỏ hàng
+                                                </button>
                                             </div>
                                         </div>
-                                        <div className='p-3 flex items-center justify-between bg-white'>
-                                            <span className='text-[#000000cc] text-sm capitalize'>
-                                                1 Thêm vào giỏ hàng{' '}
-                                            </span>
-                                            <button className='py-2 px-3 capitalize text-white bg-orange text-sm hover:opacity-90'>
-                                                Xem giỏ hàng
-                                            </button>
-                                        </div>
-                                    </div>
+                                    ) : (
+                                        <>
+                                            <img
+                                                className='w-[100px] h-[100] object-cover mx-auto'
+                                                src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/c44984f18d2d2211.png'
+                                                alt=''
+                                            />
+                                            <p className='text-center text-base text-[#000000cc] font-normal'>
+                                                Chưa có sản phẩm
+                                            </p>
+                                        </>
+                                    )}
                                 </div>
                             }
                         >
-                            <Link to='#!' className='flex justify-center'>
+                            <Link to='#!'>
                                 <svg
                                     xmlns='http://www.w3.org/2000/svg'
                                     fill='none'
@@ -287,6 +286,9 @@ const Header = () => {
                                         d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
                                     />
                                 </svg>
+                                <span className='absolute -top-1 left-1/2 bg-white px-2 py-[0.5px] rounded-[50%] flex justify-center items-center text-xs text-orange'>
+                                    {purchaseInCart?.length}
+                                </span>
                             </Link>
                         </Popover>
                     </div>

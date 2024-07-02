@@ -6,10 +6,11 @@ import { ProductListConfig, Product as TypeProduct } from 'src/types/product.typ
 import QuantityController from 'src/components/QuantityController'
 import purchaseApi from 'src/api/purchases.api'
 
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 
 const ProductDetail = () => {
     const [buyCount, setBuyCount] = useState(1)
@@ -39,13 +40,23 @@ const ProductDetail = () => {
         enabled: Boolean(product) // khi product có data thì query mới đc gọi
     })
 
-    // Purchases
-
     useEffect(() => {
         if (product && product.images.length > 0) {
             setActiveImg(product.images[0])
         }
     }, [product])
+
+    // Purchases
+    const addToCartMutation = useMutation({
+        mutationFn: (body: { product_id: string; buy_count: number }) => purchaseApi.addToCart(body),
+        onSuccess: (data) => {
+            toast.success(data.data.message)
+        }
+    })
+
+    const AddToCart = () => {
+        addToCartMutation.mutate({ product_id: product?._id as string, buy_count: buyCount })
+    }
 
     const handleNextPrev = (type: string) => {
         return () => {
@@ -220,7 +231,10 @@ const ProductDetail = () => {
                                             </div>
                                         </div>
                                         <div className='mt-8 flex items-center'>
-                                            <button className='bg-[#ffeee8] border-[1px] border-orange rounded h-12 px-5 text-orange flex items-center hover:opacity-80'>
+                                            <button
+                                                className='bg-[#ffeee8] border-[1px] border-orange rounded h-12 px-5 text-orange flex items-center hover:opacity-80'
+                                                onClick={AddToCart}
+                                            >
                                                 <svg
                                                     xmlns='http://www.w3.org/2000/svg'
                                                     fill='none'
