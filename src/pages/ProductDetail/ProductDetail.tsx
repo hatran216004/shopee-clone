@@ -4,6 +4,7 @@ import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } 
 import Product from '../ProductList/components/Product'
 import { ProductListConfig, Product as TypeProduct } from 'src/types/product.type'
 import QuantityController from 'src/components/QuantityController'
+import purchaseApi from 'src/api/purchases.api'
 
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
@@ -37,6 +38,8 @@ const ProductDetail = () => {
         staleTime: 3 * 60 * 1000, // Infinity: vĩnh viễn
         enabled: Boolean(product) // khi product có data thì query mới đc gọi
     })
+
+    // Purchases
 
     useEffect(() => {
         if (product && product.images.length > 0) {
