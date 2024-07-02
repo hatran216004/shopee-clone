@@ -1,9 +1,9 @@
 import productApi from 'src/api/product.api'
 import ProductRating from 'src/components/ProductRating'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
-import InputNumber from 'src/components/InputNumber'
 import Product from '../ProductList/components/Product'
 import { ProductListConfig, Product as TypeProduct } from 'src/types/product.type'
+import QuantityController from 'src/components/QuantityController'
 
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
@@ -11,6 +11,7 @@ import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 const ProductDetail = () => {
+    const [buyCount, setBuyCount] = useState(1)
     const { nameId } = useParams()
     const id = getIdFromNameId(nameId as string)
     const { data: productDetailData } = useQuery({
@@ -56,6 +57,10 @@ const ProductDetail = () => {
                 }
             }
         }
+    }
+
+    const handleBuyCount = (value: number) => {
+        setBuyCount(value)
     }
 
     const handleZoom = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -200,46 +205,13 @@ const ProductDetail = () => {
                                         </div>
                                         <div className='mt-7 flex items-center'>
                                             <div className='text-gray-500 text-md mr-3 capitalize'>số lượng</div>
-                                            <div className='flex items-center ml-4 h-[32px]'>
-                                                <button className='px-2 h-full border-gray-200 border-2 rounded-tl-sm rounded-bl-sm'>
-                                                    <svg
-                                                        xmlns='http://www.w3.org/2000/svg'
-                                                        fill='none'
-                                                        viewBox='0 0 24 24'
-                                                        strokeWidth={1.5}
-                                                        stroke='currentColor'
-                                                        className='size-3'
-                                                    >
-                                                        <path
-                                                            strokeLinecap='round'
-                                                            strokeLinejoin='round'
-                                                            d='M5 12h14'
-                                                        />
-                                                    </svg>
-                                                </button>
-                                                <InputNumber
-                                                    value={1}
-                                                    className='w-14 h-full px-1 border-t-2 border-b-2 border-gray-200'
-                                                    classNameError='hidden'
-                                                    classNameInput='h-full w-full outline-none text-center'
-                                                />
-                                                <button className='px-2 h-full border-gray-200 border-2 rounded-tr-sm rounded-br-sm'>
-                                                    <svg
-                                                        xmlns='http://www.w3.org/2000/svg'
-                                                        fill='none'
-                                                        viewBox='0 0 24 24'
-                                                        strokeWidth={1.5}
-                                                        stroke='currentColor'
-                                                        className='size-3'
-                                                    >
-                                                        <path
-                                                            strokeLinecap='round'
-                                                            strokeLinejoin='round'
-                                                            d='M12 4.5v15m7.5-7.5h-15'
-                                                        />
-                                                    </svg>
-                                                </button>
-                                            </div>
+                                            <QuantityController
+                                                max={product.quantity}
+                                                onIncrease={handleBuyCount}
+                                                onDecrease={handleBuyCount}
+                                                onType={handleBuyCount}
+                                                value={buyCount}
+                                            />
                                             <div className='ml-6 text-sm text-gray-500'>
                                                 {product.quantity} sản phẩm có sẵn
                                             </div>
