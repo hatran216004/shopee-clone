@@ -232,7 +232,7 @@ const Header = () => {
                                                                 <img
                                                                     className='w-10 h-10 object-cover flex-shrink-0'
                                                                     src={purchase.product.image}
-                                                                    alt=''
+                                                                    alt={purchase.product.name}
                                                                 />
                                                                 <p className='text-sm text-[#000000cc] font-normal line-clamp-1'>
                                                                     {purchase.product.name}
