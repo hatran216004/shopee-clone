@@ -77,7 +77,7 @@ const Popover = ({
                             <span
                                 ref={arrowRef}
                                 className='absolute border-x-transparent border-t-transparent 
-                                border-b-white border-[11px] translate-y-[-99%]'
+                                border-b-white border-[12px] translate-y-[-90%]'
                                 style={{
                                     left: data.middlewareData.arrow?.x,
                                     top: data.middlewareData.arrow?.y

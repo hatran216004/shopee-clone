@@ -12,6 +12,17 @@ const purchaseApi = {
     },
     addToCart: (body: { product_id: string; buy_count: number }) => {
         return http.post<SuccessResponseApi<Purchase>>(`${URL}/add-to-cart`, body)
+    },
+    buyProducts: (body: { product_id: string; buy_count: number }[]) => {
+        return http.post<SuccessResponseApi<Purchase[]>>(`${URL}/buy-products`, body)
+    },
+    updatePurchase: (body: { product_id: string; buy_count: number }) => {
+        return http.put<SuccessResponseApi<Purchase>>(`${URL}/update-purchase`, body)
+    },
+    deletePurchases: (purchaseId: string[]) => {
+        return http.delete<SuccessResponseApi<{ deleted_count: number }>>(`${URL}/purchases`, {
+            data: purchaseId
+        })
     }
 }
 

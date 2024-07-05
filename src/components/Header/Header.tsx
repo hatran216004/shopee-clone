@@ -64,7 +64,8 @@ const Header = () => {
     // Nên các query này sẽ không bị inactive => Không bị gọi lại => không cần thiết phải set stale: Infinity
     const { data: PurChasesData } = useQuery({
         queryKey: ['purchases', { status: purchasesStatus.inCart }],
-        queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
+        queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart }),
+        enabled: isAuthenticated
     })
 
     const purchaseInCart = PurChasesData?.data.data
@@ -211,7 +212,7 @@ const Header = () => {
                     <div className='col-span-1 flex justify-center relative'>
                         <Popover
                             renderPopover={
-                                <div className='bg-white w-[400px] rounded-sm shadow-md'>
+                                <div className='bg-white w-[400px] rounded-sm shadow-md min-h-[350px] flex items-center justify-center flex-col'>
                                     {purchaseInCart && purchaseInCart.length > 0 ? (
                                         <div className='pt-3'>
                                             <p className='px-3 capitalize text-[#00000042] text-base'>
@@ -247,9 +248,12 @@ const Header = () => {
                                                         purchaseInCart?.length - MAX_PRODUCT_IN_CART}{' '}
                                                     Thêm hàng vào giỏ{' '}
                                                 </span>
-                                                <button className='py-2 px-3 capitalize text-white bg-orange text-sm hover:opacity-90'>
+                                                <Link
+                                                    to='/cart'
+                                                    className='py-2 px-3 capitalize text-white bg-orange text-sm hover:opacity-80'
+                                                >
                                                     Xem giỏ hàng
-                                                </button>
+                                                </Link>
                                             </div>
                                         </div>
                                     ) : (
@@ -282,9 +286,11 @@ const Header = () => {
                                         d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
                                     />
                                 </svg>
-                                <span className='absolute -top-1 left-1/2 bg-white px-2 py-[0.5px] rounded-[50%] flex justify-center items-center text-xs text-orange'>
-                                    {purchaseInCart?.length}
-                                </span>
+                                {isAuthenticated && (
+                                    <span className='absolute -top-1 left-1/2 bg-white px-2 py-[0.5px] rounded-[50%] flex justify-center items-center text-xs text-orange'>
+                                        {purchaseInCart?.length}
+                                    </span>
+                                )}
                             </Link>
                         </Popover>
                     </div>
