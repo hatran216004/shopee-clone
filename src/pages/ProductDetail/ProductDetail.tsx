@@ -6,13 +6,15 @@ import { ProductListConfig, Product as TypeProduct } from 'src/types/product.typ
 import QuantityController from 'src/components/QuantityController'
 import purchaseApi from 'src/api/purchases.api'
 
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
+import { purchasesStatus } from 'src/constants/purchases'
 
 const ProductDetail = () => {
+    const queryClient = useQueryClient()
     const [buyCount, setBuyCount] = useState(1)
     const { nameId } = useParams()
     const id = getIdFromNameId(nameId as string)
@@ -55,7 +57,14 @@ const ProductDetail = () => {
     })
 
     const AddToCart = () => {
-        addToCartMutation.mutate({ product_id: product?._id as string, buy_count: buyCount })
+        addToCartMutation.mutate(
+            { product_id: product?._id as string, buy_count: buyCount },
+            {
+                onSuccess: () => {
+                    queryClient.invalidateQueries(['purchases', { status: purchasesStatus.inCart }])
+                }
+            }
+        )
     }
 
     const handleNextPrev = (type: string) => {

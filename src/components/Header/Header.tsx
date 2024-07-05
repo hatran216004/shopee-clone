@@ -11,7 +11,7 @@ import { purchasesStatus } from 'src/constants/purchases'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useContext } from 'react'
 import classNames from 'classnames'
 import { omit } from 'lodash'
@@ -21,7 +21,6 @@ const searchSchema = schema.pick(['searchValue'])
 const MAX_PRODUCT_IN_CART = 5
 const Header = () => {
     const { isAuthenticated, setIsAuthenticated, setUser, user } = useContext(AppContext)
-    const queryClient = useQueryClient()
     const queryConfig = useQueryConfig()
     const navigate = useNavigate()
     const { register, handleSubmit } = useForm<FormData>({
@@ -65,12 +64,9 @@ const Header = () => {
     // Nên các query này sẽ không bị inactive => Không bị gọi lại => không cần thiết phải set stale: Infinity
     const { data: PurChasesData } = useQuery({
         queryKey: ['purchases', { status: purchasesStatus.inCart }],
-        queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart }),
-        onSuccess: () => {
-            // gọi lại queryFn có queryKey có key ['purchases'] khi add to cart thành công
-            queryClient.invalidateQueries({ queryKey: ['purchases'] })
-        }
+        queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
     })
+
     const purchaseInCart = PurChasesData?.data.data
     return (
         <div
