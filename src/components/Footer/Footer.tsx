@@ -9,7 +9,7 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className='lg:col-span-2'>
-                        <div className='text-sm text-textFooter text-center'>
+                        <div className='text-sm text-textFooter text-center flex flex-wrap'>
                             Quốc gia & Khu vực:
                             <span className='px-1 border-r-2 border-slate-300'>Singapore</span>
                             <span className='px-1 border-r-2 border-slate-300'>Indonesia</span>
