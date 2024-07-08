@@ -14,12 +14,12 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
         className,
         onChange,
         value,
+        disabled,
         ...rest
     },
     ref
 ) {
     const [localValue, setLocalValue] = useState<string>(value as string)
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         // (/^\d+$/.test(value): kiểm tra value có phải là một chuỗi chỉ chứa các ký tự số hay không
@@ -30,7 +30,14 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
     }
     return (
         <div className={className}>
-            <input className={classNameInput} {...rest} onChange={handleChange} ref={ref} value={value || localValue} />
+            <input
+                className={classNameInput}
+                {...rest}
+                onChange={handleChange}
+                ref={ref}
+                value={value || localValue}
+                disabled={disabled}
+            />
             <div className={classNameError}>{errorMessage}</div>
         </div>
     )

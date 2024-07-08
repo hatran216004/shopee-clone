@@ -6,6 +6,7 @@ interface Props extends InputNumberProps {
     onIncrease?: (value: number) => void
     onDecrease?: (value: number) => void
     onType?: (value: number) => void
+    onFocusOut?: (value: number) => void
     classNameWrapper?: string
 }
 
@@ -15,6 +16,8 @@ const QuantityController = ({
     onDecrease,
     classNameWrapper = 'ml-4',
     value,
+    disabled,
+    onFocusOut,
     onType,
     ...rest
 }: Props) => {
@@ -33,7 +36,6 @@ const QuantityController = ({
 
     const increase = () => {
         let _value = Number(value || localValue) + 1
-        console.log(_value)
         if (max !== undefined && _value > max) {
             _value = max
         }
@@ -50,9 +52,16 @@ const QuantityController = ({
         setLocalValue(_value)
     }
 
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
+        onFocusOut && onFocusOut(Number(e.target.value))
+    }
+
     return (
         <div className={'flex items-center h-[32px] ' + classNameWrapper}>
-            <button className='px-2 h-full border-gray-200 border-2 rounded-tl-sm rounded-bl-sm' onClick={decrease}>
+            <button
+                className='px-2 h-full border-gray-200 border-2 rounded-tl-sm rounded-bl-sm hover:bg-gray-100'
+                onClick={decrease}
+            >
                 <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -69,10 +78,15 @@ const QuantityController = ({
                 className='w-14 h-full px-1 border-t-2 border-b-2 border-gray-200'
                 classNameError='hidden'
                 classNameInput='h-full w-full outline-none text-center'
+                disabled={disabled}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 {...rest}
             />
-            <button className='px-2 h-full border-gray-200 border-2 rounded-tr-sm rounded-br-sm' onClick={increase}>
+            <button
+                className='px-2 h-full border-gray-200 border-2 rounded-tr-sm rounded-br-sm hover:bg-gray-100'
+                onClick={increase}
+            >
                 <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
