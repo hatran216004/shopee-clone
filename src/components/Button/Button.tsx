@@ -5,7 +5,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = ({ className, disabled, isLoading, children, ...rest }: ButtonProps) => {
-    const newClassName = disabled ? `${className} cursor-not-allowed` : className
+    const newClassName = disabled ? `${className} cursor-not-allowed opacity-80` : className
     return (
         <button className={newClassName} disabled={disabled} {...rest}>
             {isLoading && (

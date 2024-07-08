@@ -212,7 +212,7 @@ const Header = () => {
                     <div className='col-span-1 flex justify-center relative'>
                         <Popover
                             renderPopover={
-                                <div className='bg-white w-[400px] rounded-sm shadow-md min-h-[350px] flex items-center justify-center flex-col'>
+                                <div className='bg-white w-[400px] rounded-sm shadow-md flex items-center justify-center flex-col'>
                                     {purchaseInCart && purchaseInCart.length > 0 ? (
                                         <div className='pt-3'>
                                             <p className='px-3 capitalize text-[#00000042] text-base'>
@@ -257,16 +257,16 @@ const Header = () => {
                                             </div>
                                         </div>
                                     ) : (
-                                        <>
+                                        <div className='min-h-[350px] flex items-center justify-center flex-col'>
                                             <img
-                                                className='w-[100px] h-[100] object-cover mx-auto'
+                                                className='w-[100px] h-[100px] object-cover mx-auto'
                                                 src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/c44984f18d2d2211.png'
                                                 alt=''
                                             />
                                             <p className='text-center text-base text-[#000000cc] font-normal'>
                                                 Chưa có sản phẩm
                                             </p>
-                                        </>
+                                        </div>
                                     )}
                                 </div>
                             }
