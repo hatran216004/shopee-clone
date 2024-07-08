@@ -33,6 +33,7 @@ const QuantityController = ({
 
     const increase = () => {
         let _value = Number(value || localValue) + 1
+        console.log(_value)
         if (max !== undefined && _value > max) {
             _value = max
         }
