@@ -1,3 +1,5 @@
+import Input from 'src/components/Input'
+
 const Profile = () => {
     return (
         <div className='pt-[18px] pb-[40px] bg-white rounded-md px-[30px]'>
@@ -17,25 +19,34 @@ const Profile = () => {
                         <div className='mr-6 text-[#555555cc] capitalize text-sm w-[162px] max-w-full text-right'>
                             Tên
                         </div>
-                        <div className='h-[41px] px-2 bg-white border-[1px] border-[#00000024] w-[418px] max-w-full'>
-                            <input type='text' className='w-full h-full outline-none' />
-                        </div>
+                        <Input
+                            type='text'
+                            className='h-[41px] px-3 bg-white border-[1px] border-[#00000024] w-[418px] max-w-full'
+                            classNameError='hidden'
+                            classNameInput='w-full h-full outline-none'
+                        />
                     </div>
                     <div className='mt-7 flex items-center'>
                         <div className='mr-6 text-[#555555cc] capitalize text-sm w-[162px] max-w-full text-right'>
                             số điện thoại
                         </div>
-                        <div className='h-[41px] px-2 bg-white border-[1px] border-[#00000024] w-[418px] max-w-full'>
-                            <input type='text' className='w-full h-full outline-none' />
-                        </div>
+                        <Input
+                            type='text'
+                            className='h-[41px] px-3 bg-white border-[1px] border-[#00000024] w-[418px] max-w-full'
+                            classNameError='hidden'
+                            classNameInput='w-full h-full outline-none'
+                        />
                     </div>
                     <div className='mt-7 flex items-center'>
                         <div className='mr-6 text-[#555555cc] capitalize text-sm w-[162px] max-w-full text-right'>
                             địa chỉ
                         </div>
-                        <div className='h-[41px] px-2 bg-white border-[1px] border-[#00000024] w-[418px] max-w-full'>
-                            <input type='text' className='w-full h-full outline-none' />
-                        </div>
+                        <Input
+                            type='text'
+                            className='h-[41px] px-3 bg-white border-[1px] border-[#00000024] w-[418px] max-w-full'
+                            classNameError='hidden'
+                            classNameInput='w-full h-full outline-none'
+                        />
                     </div>
                     <div className='mt-7 flex items-center'>
                         <div className='mr-6 text-[#555555cc] capitalize text-sm w-[162px] max-w-full text-right'>
