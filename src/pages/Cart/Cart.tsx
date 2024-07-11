@@ -78,7 +78,7 @@ const Cart = () => {
         }
     }, [])
 
-    const handleChecked = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const handleCheck = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         setExtendedPurchases(
             produce((draft) => {
                 draft[index].checked = e.target.checked
@@ -179,7 +179,7 @@ const Cart = () => {
                                                     type='checkbox'
                                                     className='w-5 h-5 accent-orange'
                                                     checked={purchase.checked}
-                                                    onChange={(e) => handleChecked(e, index)}
+                                                    onChange={(e) => handleCheck(e, index)}
                                                 />
                                                 <Link
                                                     to={`${path.home}${generateNameId({ name: purchase.product.name, id: purchase.product._id })}`}
@@ -302,7 +302,7 @@ const Cart = () => {
                     <p className='mt-3 text-center text-base text-gray-400 font-normal'>Giỏ hàng của bạn còn trống</p>
                     <Link
                         to={path.home}
-                        className='mt-3 px-4 capitalize text-white bg-orange h-[40px]  flex items-center hover:opacity-80'
+                        className='mt-3 px-10 capitalize text-white bg-orange h-[40px]  flex items-center hover:opacity-80'
                     >
                         mua ngay
                     </Link>
