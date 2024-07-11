@@ -3,7 +3,7 @@ import path from 'src/constants/path'
 
 const UserSideNav = () => {
     return (
-        <div>
+        <div className='mr-8'>
             <div className='flex items-center border-b-[1px] border-gray-300 pb-4'>
                 <Link to={path.profile} className='w-12 h-12 rounded-full block overflow-hidden'>
                     <img
