@@ -7,17 +7,20 @@ import QuantityController from 'src/components/QuantityController'
 import purchaseApi from 'src/api/purchases.api'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { purchasesStatus } from 'src/constants/purchases'
+import path from 'src/constants/path'
 
 const ProductDetail = () => {
     const queryClient = useQueryClient()
     const [buyCount, setBuyCount] = useState(1)
     const { nameId } = useParams()
     const id = getIdFromNameId(nameId as string)
+    const navigate = useNavigate()
+
     const { data: productDetailData } = useQuery({
         queryKey: ['productDetail', id],
         queryFn: () => productApi.getProductDetail(id as string)
@@ -105,6 +108,16 @@ const ProductDetail = () => {
 
     const handleResetZoom = () => {
         imgRef.current?.removeAttribute('style')
+    }
+
+    const buyNow = async () => {
+        const res = await addToCartMutation.mutateAsync({ product_id: product?._id as string, buy_count: buyCount })
+        const purchase = res.data.data
+        navigate(path.cart, {
+            state: {
+                purchaseId: purchase._id
+            }
+        })
     }
 
     return (
@@ -260,7 +273,10 @@ const ProductDetail = () => {
                                                 </svg>
                                                 Thêm vào giỏ hàng
                                             </button>
-                                            <button className='ml-4 bg-orange border-[1px] border-orange rounded h-12 text-white flex items-center justify-center hover:opacity-80 capitalize min-w-[180px]'>
+                                            <button
+                                                className='ml-4 bg-orange border-[1px] border-orange rounded h-12 text-white flex items-center justify-center hover:opacity-80 capitalize min-w-[180px]'
+                                                onClick={buyNow}
+                                            >
                                                 mua ngay
                                             </button>
                                         </div>

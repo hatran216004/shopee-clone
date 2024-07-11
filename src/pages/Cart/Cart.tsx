@@ -2,33 +2,25 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { produce } from 'immer'
 import { keyBy } from 'lodash'
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useContext, useEffect, useMemo } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import purchaseApi from 'src/api/purchases.api'
 import Button from 'src/components/Button'
 import QuantityController from 'src/components/QuantityController'
 import path from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchases'
-import { Purchase } from 'src/types/purchase.api'
+import { AppContext } from 'src/context/app.context'
+import { Purchase } from 'src/types/purchase.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 
-interface ExtendedPurchase extends Purchase {
-    disabled: boolean
-    checked: boolean
-}
-
 const Cart = () => {
-    const [extendedPurchase, setExtendedPurchase] = useState<ExtendedPurchase[]>([])
+    const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
     const { data: PurChasesData, refetch } = useQuery({
         queryKey: ['purchases', { status: purchasesStatus.inCart }],
         queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
     })
-    const purchaseInCart = PurChasesData?.data.data
-    const isAllChecked = extendedPurchase.every((item) => item.checked)
-    const purchasesChecked = extendedPurchase.filter((item) => item.checked)
-    const purchasesCheckedLength = purchasesChecked.length
-    const totalCheckedPurchasePrice = purchasesChecked.reduce((result, curr) => result + curr.buy_count * curr.price, 0)
+
     const updatePurchaseMutation = useMutation({
         mutationFn: purchaseApi.updatePurchase,
         onSuccess: () => {
@@ -52,24 +44,42 @@ const Cart = () => {
         }
     })
 
+    const location = useLocation()
+    const purchaseIdFromLocation = (location.state as { purchaseId: string } | null)?.purchaseId
+    const purchaseInCart = PurChasesData?.data.data
+    const isAllChecked = useMemo(() => extendedPurchases.every((item) => item.checked), [extendedPurchases])
+    const purchasesChecked = useMemo(() => extendedPurchases.filter((item) => item.checked), [extendedPurchases])
+    const purchasesCheckedLength = purchasesChecked.length
+    const totalCheckedPurchasePrice = useMemo(
+        () => purchasesChecked.reduce((result, curr) => result + curr.buy_count * curr.price, 0),
+        [purchasesChecked]
+    )
+
     useEffect(() => {
-        setExtendedPurchase((prev) => {
+        setExtendedPurchases((prev) => {
             // keyBy: convert array to object
             const extendedPurchasesObject = keyBy(prev, '_id')
             return (
                 purchaseInCart?.map((purchase) => {
+                    const isPurchaseIdFromLocation = purchaseIdFromLocation === purchase._id
                     return {
                         ...purchase,
                         disabled: false,
-                        checked: Boolean(extendedPurchasesObject[purchase._id]?.checked)
+                        checked: isPurchaseIdFromLocation || Boolean(extendedPurchasesObject[purchase._id]?.checked)
                     }
                 }) || []
             )
         })
-    }, [purchaseInCart])
+    }, [purchaseInCart, purchaseIdFromLocation, setExtendedPurchases])
+
+    useEffect(() => {
+        return () => {
+            history.replaceState(null, '')
+        }
+    }, [])
 
     const handleChecked = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        setExtendedPurchase(
+        setExtendedPurchases(
             produce((draft) => {
                 draft[index].checked = e.target.checked
             })
@@ -77,7 +87,7 @@ const Cart = () => {
     }
 
     const handleCheckAll = () => {
-        setExtendedPurchase((prev) =>
+        setExtendedPurchases((prev) =>
             prev.map((purchase) => {
                 return { ...purchase, checked: !isAllChecked }
             })
@@ -86,8 +96,8 @@ const Cart = () => {
 
     const handleQuantity = (index: number, value: number, enabled: boolean) => {
         if (enabled) {
-            const purchase = extendedPurchase[index]
-            setExtendedPurchase(
+            const purchase = extendedPurchases[index]
+            setExtendedPurchases(
                 produce((draft) => {
                     draft[index].disabled = true
                 })
@@ -101,7 +111,7 @@ const Cart = () => {
 
     const handleTypeQuantity = (index: number) => {
         return (value: number) => {
-            setExtendedPurchase(
+            setExtendedPurchases(
                 produce((draft) => {
                     draft[index].buy_count = value
                 })
@@ -110,8 +120,7 @@ const Cart = () => {
     }
 
     const handleDeletePurchase = (index: number) => {
-        const purchase = extendedPurchase[index]
-        console.log(purchase._id)
+        const purchase = extendedPurchases[index]
         deletePruchaseMutation.mutate([purchase._id])
     }
 
@@ -132,7 +141,7 @@ const Cart = () => {
 
     return (
         <>
-            {extendedPurchase.length > 0 ? (
+            {extendedPurchases.length > 0 ? (
                 <div className='bg-[#f5f5f5] pt-6'>
                     <div className='container'>
                         <div className='bg-white rounded-sm shadow-sm'>
@@ -142,7 +151,7 @@ const Cart = () => {
                                         type='checkbox'
                                         className='w-5 h-5 accent-orange cursor-pointer'
                                         checked={isAllChecked}
-                                        onClick={handleCheckAll}
+                                        onChange={handleCheckAll}
                                     />
                                     <span className='text-black'>Sản Phẩm</span>
                                 </div>
@@ -155,7 +164,7 @@ const Cart = () => {
                             </div>
                         </div>
                         <div>
-                            {extendedPurchase.map((purchase, index) => {
+                            {extendedPurchases.map((purchase, index) => {
                                 return (
                                     <div
                                         className={classNames('px-9 py-5 bg-white rounded-sm shadow-sm', {
@@ -190,11 +199,11 @@ const Cart = () => {
                                                 <div className='col-span-5 md:col-span-2 flex items-center justify-start gap-2 text-sm'>
                                                     <div className='flex items-center line-through text-slate-400'>
                                                         <span className='text-xs'>đ</span>
-                                                        {formatCurrency(purchase.price)}
+                                                        {formatCurrency(purchase.price_before_discount)}
                                                     </div>
                                                     <div className='flex items-center'>
                                                         <span className='text-xs'>đ</span>
-                                                        {formatCurrency(purchase.price_before_discount)}
+                                                        {formatCurrency(purchase.price)}
                                                     </div>
                                                 </div>
                                                 <div className='col-span-5 md:col-span-1 flex items-center justify-end -ml-4 md:-ml-0'>
@@ -225,9 +234,7 @@ const Cart = () => {
                                                 </div>
                                                 <div className='col-span-5 md:col-span-1 flex items-center justify-end text-orange text-sm'>
                                                     <span className='text-xs'>đ</span>
-                                                    {formatCurrency(
-                                                        purchase.price_before_discount * purchase.buy_count
-                                                    )}
+                                                    {formatCurrency(purchase.price * purchase.buy_count)}
                                                 </div>
                                                 <button
                                                     className=' col-span-5 md:col-span-1 text-sm hover:text-orange text-right'
@@ -292,7 +299,13 @@ const Cart = () => {
                         src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/c44984f18d2d2211.png'
                         alt=''
                     />
-                    <p className='mt-3 text-center text-base text-gray-400 font-normal'>Chưa có sản phẩm</p>
+                    <p className='mt-3 text-center text-base text-gray-400 font-normal'>Giỏ hàng của bạn còn trống</p>
+                    <Link
+                        to={path.home}
+                        className='mt-3 px-4 capitalize text-white bg-orange h-[40px]  flex items-center hover:opacity-80'
+                    >
+                        mua ngay
+                    </Link>
                 </div>
             )}
         </>
